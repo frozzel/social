@@ -1,0 +1,17 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "server for social media app",
+  "main": "server.js",
+  "scripts": {
+    "test": "test",
+    "start": "node server.js"
+  },
+  "keywords": [
+    "social",
+    "media",
+    "app"
+  ],
+  "author": "Dennis Hickox",
+  "license": "MIT"
+}
