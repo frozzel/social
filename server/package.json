@@ -13,5 +13,10 @@
     "app"
   ],
   "author": "Dennis Hickox",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "apollo-server": "^3.11.1",
+    "graphql": "^16.6.0",
+    "mongoose": "^6.9.0"
+  }
 }
