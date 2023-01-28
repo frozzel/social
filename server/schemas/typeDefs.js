@@ -9,7 +9,8 @@ type Post{
 }
 
 type Query{
-    posts: [Post]
+    getPosts: [Post]
+    
 }
 `
 module.exports = typeDefs;

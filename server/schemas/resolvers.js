@@ -2,10 +2,11 @@ const Post = require('../models/Post');
 
 const resolvers =  {
     Query: {
-        posts: async () => {
+         getPosts: async () => {
             const posts = await Post.find();
             return posts;
-        }
-    }
+    },
+}
 }
 module.exports = resolvers;
+
