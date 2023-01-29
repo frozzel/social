@@ -19,6 +19,10 @@ function generateToken(user) {
 
 
 const resolvers =  {
+    Post: {
+        likeCount: (parent) => parent.likes.length,
+        commentCount: (parent) => parent.comments.length
+    },
     Query: {
          getPosts: async () => {
             const posts = await Post.find().sort({createdAt: -1});
@@ -90,7 +94,9 @@ const resolvers =  {
                 },
          createPost: async (parent, {body}, context) => {
             const user = checkAuth(context);
-            console.log(user);
+            if(body.trim() === '') {
+                throw new Error('Post body must not be empty');
+            }
             const newPost = new Post({
                 body,
                 user: user.id,
@@ -113,7 +119,64 @@ const resolvers =  {
             } catch(err) {
                 throw new Error(err);
             }},
-}
-}   
+        createComment: async (parent, {postId, body}, context) => {
+            const user = checkAuth(context);
+            if(body.trim() === '') {
+                throw new UserInputError('Empty comment', {
+                    errors: {
+                        body: 'Comment body must not be empty'
+                    }
+                });
+            }
+            const post = await Post.findById(postId);
+            if(post) {
+                post.comments.unshift({
+                    body,
+                    username: user.username,
+                    createdAt: new Date().toISOString()
+                });
+                await post.save();
+                return post;
+            } else throw new UserInputError('Post not found');
+
+        },
+        deleteComment: async (parent, {postId, commentId}, context) => {
+            const user = checkAuth(context);
+            const post = await Post.findById(postId);
+            if(post) {
+                const commentIndex = post.comments.findIndex(c => c.id === commentId);
+                if(post.comments[commentIndex].username === user.username) {
+                    post.comments.splice(commentIndex, 1);
+                    await post.save();
+                    return post;
+                } else {
+                    throw new AuthenticationError('Action not allowed');
+                }
+            } else {
+                throw new UserInputError('Post not found');
+            }
+        },   
+        likePost: async (parent, {postId}, context) => {
+            const user = checkAuth(context);
+            const post = await Post.findById(postId);
+            if(post) {
+                if(post.likes.find(like => like.username === user.username)) {
+                    post.likes = post.likes.filter(like => like.username !== user.username);
+                } else {
+                    post.likes.push({
+                        username: user.username,
+                        createdAt: new Date().toISOString()
+                    });
+                }
+                await post.save();
+                return post;
+            }
+            else throw new UserInputError('Post not found');
+
+        },  
+    
+},
+  
+};
 module.exports = resolvers;
 

@@ -7,7 +7,7 @@ const { typeDefs, resolvers } = require('./schemas');
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-const Post = require('./models/Post');// Post is a model
+
 
 
 
