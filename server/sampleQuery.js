@@ -54,3 +54,47 @@
 // mutation deletePost{
 //     deletePost(postId: "63d6a95794dceb7afab41e95")
 //   }
+
+// mutation Mutation  {
+//     createComment(postId: "63d6b228cd31b93571bfdf05", body: "This is a comment on my post") {
+//       id
+//       body
+//       createdAt
+//       username
+//       likes {
+//         id
+//         createdAt
+//         username
+//       }
+//     }
+//   }
+
+// mutation Mutation {
+//     deleteComment(postId: "63d6b228cd31b93571bfdf05", commentId: "63d6b2aecd31b93571bfdf08") {
+//       id
+//       body
+//       createdAt
+//       username
+//       comments {
+//         id
+//         createdAt
+//         username
+//         body
+//       }
+//     }
+//   }
+
+// mutation Mutation {
+//     likePost(postId: "63d6b228cd31b93571bfdf05") {
+//       id
+//       body
+//       createdAt
+//       username
+//       comments {
+//         id
+//         createdAt
+//         username
+//         body
+//       }
+//     }
+//   }
