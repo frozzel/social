@@ -6,6 +6,7 @@ const {SECRET_KEY} = require('../config/dbAuth');
 const {UserInputError} = require('apollo-server');
 const {validateRegisterInput} = require('../utils/validators');
 const {validateLoginInput} = require('../utils/validators');
+const checkAuth = require('../utils/Auth');
 
 
 function generateToken(user) {
@@ -20,8 +21,16 @@ function generateToken(user) {
 const resolvers =  {
     Query: {
          getPosts: async () => {
-            const posts = await Post.find();
+            const posts = await Post.find().sort({createdAt: -1});
             return posts;
+    },
+         getPost: async (parent, {postId}) => {
+            const post  = await Post.findById(postId);
+            if(post) {
+                return post;
+            } else {
+                throw new Error('Post not found');
+            } 
     },
 },
     Mutation: {
@@ -79,7 +88,32 @@ const resolvers =  {
             }
             
                 },
-    }
+         createPost: async (parent, {body}, context) => {
+            const user = checkAuth(context);
+            console.log(user);
+            const newPost = new Post({
+                body,
+                user: user.id,
+                username: user.username,
+                createdAt: new Date().toISOString()
+            });
+            const post = await newPost.save();
+            return post;
+        },
+         deletePost: async (parent, {postId}, context) => {
+            const user = checkAuth(context);
+            try {
+                const post = await Post.findById(postId);
+                if(user.username === post.username) {
+                    await post.delete();
+                    return 'Post deleted successfully';
+                } else {
+                    throw new AuthenticationError('Action not allowed');
+                }
+            } catch(err) {
+                throw new Error(err);
+            }},
 }
+}   
 module.exports = resolvers;
 

@@ -32,3 +32,25 @@
 //       createdAt
 //     }
 //   }
+
+// query Query{
+//     getPost(postId: "63d585421d01dd752683c365") {
+//       id
+//       body
+//       createdAt
+//       username
+//     }
+//   }
+//////////////////////////////////////////////// Add HEader token to test, get token from login mutation, Bearer <token> must be in quotes 
+// mutation{
+//     createPost(body: "2nd post created") {
+//       id
+//       createdAt
+//       username
+//       body
+//     }
+//   }
+//////////////////////////////////add header like above, token must be from user who created post
+// mutation deletePost{
+//     deletePost(postId: "63d6a95794dceb7afab41e95")
+//   }
