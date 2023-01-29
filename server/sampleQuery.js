@@ -21,3 +21,14 @@
 //       username
 //     }
 //   }
+
+//// get header token from login mutation for testing
+// mutation Mutation{
+//     login(username: "username", password: "111111") {
+//       id
+//       email
+//       token
+//       username
+//       createdAt
+//     }
+//   }
